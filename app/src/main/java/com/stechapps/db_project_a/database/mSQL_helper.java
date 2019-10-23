@@ -45,10 +45,9 @@ public class mSQL_helper extends SQLiteOpenHelper {
     public long insertData(List<String> data){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues values=new ContentValues();
-
-        values.put(db_model.getTable_attr().get(0)[0],data.get(0));
-        values.put(db_model.getTable_attr().get(1)[0],data.get(1));
-
+        for (int i=0;i<data.size();i++) {
+            values.put(db_model.getTable_attr().get(i)[0], data.get(i));
+        }
         long id=db.insert(db_model.getTable_name(),null,values);
         Log.d("ID+++++++++++++++++++++", "insertData: "+id);
         db.close();
