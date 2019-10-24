@@ -26,6 +26,11 @@ public class mSQL_helper extends SQLiteOpenHelper {
         this.DATABASE_NAME=DATABASE_NAME;
         this.db_model=db_model;
     }
+    public mSQL_helper(Context context,String DATABASE_NAME){
+        super(context, DATABASE_NAME, null, 2);
+        DATABASE_VERSION=2;
+
+    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -38,8 +43,12 @@ public class mSQL_helper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        db.execSQL("DROP TABLE IF EXISTS " + db_model.getTable_name());
+//        db.execSQL("DROP TABLE IF EXISTS " + db_model.getTable_name());
         onCreate(db);
+    }
+
+    public Db_Model getDb_model() {
+        return db_model;
     }
 
     public long insertData(List<String> data){
@@ -49,20 +58,20 @@ public class mSQL_helper extends SQLiteOpenHelper {
             values.put(db_model.getTable_attr().get(i)[0], data.get(i));
         }
         long id=db.insert(db_model.getTable_name(),null,values);
-        Log.d("ID+++++++++++++++++++++", "insertData: "+id);
+        Log.d("ID==", "insertData: "+id);
         db.close();
         return id;
 
     }
-    public void dropTable(String TableName){
+    public void dropTable(){
         SQLiteDatabase db=this.getWritableDatabase();
 
         db.execSQL("DROP TABLE IF EXISTS " + db_model.getTable_name());
 
-        Log.d("DROP TABLE ______", "dropTable: ");
+        Log.d("DROP TABLE ______", "dropTable: "+db_model.getTable_name());
 
     }
-    public Cursor GetAllData(String TableName){
+    public Cursor GetAllData(){
         SQLiteDatabase db=this.getWritableDatabase();
         Cursor cursor = db.rawQuery(" SELECT * FROM " + db_model.getTable_name(), null);
         return cursor;
@@ -70,10 +79,22 @@ public class mSQL_helper extends SQLiteOpenHelper {
     }
     public void CreateTable(){
         SQLiteDatabase db=this.getWritableDatabase();
-        db.execSQL("DROP TABLE IF EXISTS " + db_model.getTable_name());
+        try {
+
 
         db.execSQL(db_model.CreateTable());
-        Log.d("TABLE CREATED", "CreateTAble: "+db_model.CreateTable()+"  <<<<<<<<<<<<<<<<<<table name>>>>>>>"+db_model.getTable_name());
+            Log.d("TABLE CREATED", "CreateTAble: "+db_model.CreateTable()+"  <<<<<<<<<<<<<<<<<<table name>>>>>>>"+db_model.getTable_name());
+        }
+        catch (Exception e){
+            Log.d("TABLE ALREADY EXIST", "CreateTable: "+e);
+        }
+        Log.d("QUERY", "CreateTable:<<<<<<<<<<<<<<<<<<<<<<<<<<+"+db_model.CreateTable()+">>>>>>>>>>>>>>>>>>>>>> ");
+
+    }
+    public Cursor GetColumn(String ColumnName){
+        SQLiteDatabase db=this.getWritableDatabase();
+        return db.rawQuery("SELECT + "+ColumnName+" FROM "+db_model.getTable_name(),null);
+
 
     }
 }

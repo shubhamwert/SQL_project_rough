@@ -39,13 +39,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void button1() {
         Toast.makeText(this, "Button 1 clicked", Toast.LENGTH_SHORT).show();
-        String[] s1={"COLUMN1"};
+        String[] s1={"A7MI","varchar(4)"};
         String[] s2={"COLUMN2"};
         List<String[]> l= new ArrayList<String[]>();
         l.add(s1);
         l.add(s2);
 
-        dbs = new Db_Model("test_table_1",l,1);
+        dbs = new Db_Model("test_table_2",l,1);
         Log.d("Main Activity++", "button1: "+dbs.getTable_name());
         helper=new mSQL_helper(this,"DATABASE_TEST",1,dbs);
         helper.CreateTable();
@@ -53,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void button2(View view) {
 
-        helper.dropTable(dbs.getTable_name());
-        Toast.makeText(this,"TBALE DROPPED"+dbs.getTable_name(),Toast.LENGTH_SHORT).show();
+        helper.dropTable();
+        Toast.makeText(this,"TABLE DROPPED"+dbs.getTable_name(),Toast.LENGTH_SHORT).show();
     }
 
     public void button3(View view) {
@@ -65,9 +65,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void nutton3(View view) {
-        Cursor data=helper.GetAllData(dbs.getTable_name());
+        Cursor data=helper.GetAllData();
         int i=0;
         TextView tv=findViewById(R.id.tv1);
+        tv.setText("");
         while (data.moveToNext()){
             Toast.makeText(this, ""+data, Toast.LENGTH_SHORT).show();
             tv.append(data.getString((data.getColumnIndexOrThrow(dbs.getTable_attr().get(0)[0]))));
