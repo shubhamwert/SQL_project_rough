@@ -81,6 +81,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void InsertActivity(View view) {
-        startActivity(new Intent(this,InsertActivty.class));
+        startActivity(new Intent(this,batches.class));
     }
 }

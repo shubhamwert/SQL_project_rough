@@ -103,4 +103,8 @@ public class mSQL_helper extends SQLiteOpenHelper {
 
 
     }
+    public Cursor GetRow(int index){
+        SQLiteDatabase db=this.getWritableDatabase();
+        return db.rawQuery("SELECT * FROM "+db_model.getTable_name()+" WHERE rowid = " + index,null);
+    }
 }
