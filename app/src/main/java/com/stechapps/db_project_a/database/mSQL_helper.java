@@ -6,12 +6,18 @@ import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.stechapps.db_project_a.R;
 import com.stechapps.db_project_a.database.models.Db_Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class mSQL_helper extends SQLiteOpenHelper {
@@ -57,7 +63,7 @@ public class mSQL_helper extends SQLiteOpenHelper {
         for (int i=0;i<data.size();i++) {
             values.put(db_model.getTable_attr().get(i)[0], data.get(i));
         }
-        long id=db.insert(db_model.getTable_name(),null,values);
+        long id=db.insert(db_model.getTable_name(),"P",values);
         Log.d("ID==", "insertData: "+id);
         db.close();
         return id;

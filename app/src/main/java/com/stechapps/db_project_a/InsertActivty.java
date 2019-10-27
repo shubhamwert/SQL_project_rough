@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,39 +20,86 @@ public class InsertActivty extends AppCompatActivity {
     mSQL_helper mhelper;
     Db_Model base_model;
     String TAG="TEST";
-
+    int i=1;
+    TextView tv,tvo;
+    ArrayList<String> Atten;
+    static int mkl=0;
+    int j;
+    boolean newEdit=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_activty);
 
-//        student structure: 10 students
         Intinazie();
-        ArrayList<String> s=new ArrayList<>();
-        s.add("SHUBHAM");
-        s.add("AMANDEEP");
-        insertData(s);
-    }
+        Button bt=findViewById(R.id.next);
+        Button bt2=findViewById(R.id.abs);
+        tvo=findViewById(R.id.tv_test);
+        tv = findViewById(R.id.test_field);
+        Atten = new ArrayList<String>();
 
-    private void insertData(ArrayList<String> s) {
-        List<String> Attendence=new ArrayList<String>();
-        Attendence.add("21-09-2019");
-        List<String> l=new ArrayList<>();
-        for (int i=0;i<mhelper.getDb_model().getTable_attr().size();i++){
-            l.add(mhelper.getDb_model().getTable_attr().get(i)[0]);
-        }
-        Log.d(TAG, "insertData: "+l.indexOf("SHUBHAM"));
-        for (int i=0;i<s.size();i++){
-            int pos=l.indexOf(s.get(i));
-            if (pos!=-1){
-                
-            }else{
-                Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+        Atten.add(" "+mkl);
+        mkl++;
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UpdateList(true);
+                tvo.setText(mhelper.getDb_model().getTable_attr().get(i)[0]);
+                i++;
+
             }
-        }
-        mhelper.insertData(Attendence);
+        });
+        bt2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UpdateList(false);
+                tvo.setText(mhelper.getDb_model().getTable_attr().get(i)[0]);
+                i++;
+
+            }
+        });
+
 
     }
+    public void previous(View view) {
+        j = i;
+        i--;
+        newEdit=true;
+        tvo.setText(mhelper.getDb_model().getTable_attr().get(i)[0]);
+
+
+    }
+    public void UpdateList(boolean c){
+    if (!newEdit){
+        if (c){
+            Atten.add("P");
+
+                    }
+        else{
+            Atten.add("A");
+        }
+        tv.setText(Atten.toString());
+    }
+    else if(newEdit){
+        if (c){
+            Atten.set(i,"P");
+
+        }
+        else{
+            Atten.set(i,"A");
+        }
+        i=j;
+        tvo.setText(mhelper.getDb_model().getTable_attr().get(i)[0]);
+        tv.setText(Atten.toString());
+
+        newEdit=false;
+
+        }
+
+    }
+
+
+
 
     private void Intinazie() {
         String[] s1={"Date"," varchar PRIMARY KEY"};
@@ -68,7 +116,6 @@ public class InsertActivty extends AppCompatActivity {
 
         base_model = new Db_Model(" Attendence ",sample_data,1);
         mhelper = new mSQL_helper(this,"Student",1,base_model);
-        mhelper.dropTable();
         mhelper.CreateTable();
 
     }
@@ -101,5 +148,18 @@ public class InsertActivty extends AppCompatActivity {
 
         }
         data.close();
+    }
+
+    public void btup(View view) {
+        mhelper.insertData(Atten);
+    }
+
+
+    public void dropTable(View view) {
+        mhelper.dropTable();
+    }
+
+    public void createIt(View view) {
+        mhelper.CreateTable();
     }
 }
