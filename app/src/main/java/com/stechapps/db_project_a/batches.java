@@ -54,14 +54,17 @@ EditText edtv;
         ls.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Cursor c=mhelper.GetRow(position);
-                c.moveToNext();
+                Cursor c=mhelper.GetAllData();
+
+                for (int i=0;i<position+1;i++){
+                    c.moveToNext();
+                }
                 Intent i=new Intent(batches.this,StudentBatch.class);
                 Bundle b=new Bundle();
-                String s=c.getString(1);
-                c.close();
-                b.putString("TableName",s);
-                startActivity(i,b);
+                String s=c.getString(c.getColumnIndexOrThrow("batches_name"));
+                i.putExtra("TableName",s);
+
+                startActivity(i);
             }
         });
         ls.setAdapter(adapter);

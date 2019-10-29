@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".StudentBatch"></activity>
+        <activity android:name=".InitialStudentTable"></activity>
+        <activity android:name=".StudentBatch" />
         <activity android:name=".batches" />
         <activity android:name=".InsertActivty" />
         <activity android:name=".MainActivity">

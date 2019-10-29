@@ -83,4 +83,10 @@ public class MainActivity extends AppCompatActivity {
     public void InsertActivity(View view) {
         startActivity(new Intent(this,batches.class));
     }
+
+    public void StudentAdd(View view) {
+        Intent i=new Intent(this,InitialStudentTable.class);
+        i.putExtra("TableName","TestBatch");
+        startActivity(i);
+    }
 }
